@@ -58,18 +58,28 @@ const Movies = styled.div`
   top: -50px;
 `;
 
+const Footer = styled.footer`
+  background-image: linear-gradient(-45deg, #d754ab, #fd723a);
+  height: 20vh;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
 export default () => {
   const { loading, data } = useQuery(GET_MOVIES);
   return (
     <Container>
       <Header>
-        <Title>Apollo 2020</Title>
-        <Subtitle>I love GraphQL</Subtitle>
+        <Title>apollo_movie</Title>
+        <Subtitle>use GraphQL</Subtitle>
       </Header>
       {loading && <Loading>Loading...</Loading>}
-      {!loading && <Loading>Loading End</Loading>}
       <Movies>
-        {data?.movies?.map(m => (
+        {data?.movies?.map(m => (        
           <Movie 
             key={m.id}
             id={m.id}
@@ -78,6 +88,7 @@ export default () => {
           />
         ))}
       </Movies>
+      <Footer></Footer>
     </Container>
   );
 };

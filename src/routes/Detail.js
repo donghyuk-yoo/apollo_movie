@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import {gql} from "apollo-boost";
+import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import styled from "styled-components";
 
@@ -14,8 +14,8 @@ const GET_MOVIE = gql`
             rating
             description_intro
             isLiked @client
-        }
-        suggestions(id: $id) {
+          }
+          suggestions(id: $id) {
             id
             medium_cover_image
         }
@@ -23,10 +23,10 @@ const GET_MOVIE = gql`
 `;
 
 const Container = styled.div`
-    height: 100vh;
+    height: 150vh;
     background-image: linear-gradient(-45deg, #d754ab, #fd723a);
     width: 100%;
-    display: flex;
+    display: block;
     justify-content: space-around;
     align-items: center;
     color: white;
@@ -51,8 +51,10 @@ const Description = styled.p`
 `;
 
 const Poster = styled.div`
-    width: 25%;
-    height: 60%;
+    width: 50vh;
+    height: 50vh;
+    padding-top: 300px;
+    margin-left: 50px;
     background-color: transparent;
     background-image: url(${props => props.bg});
     background-size: cover;
@@ -63,19 +65,23 @@ export default () => {
     // get parameter
     const { id } = useParams();
     const { loading, data } = useQuery(GET_MOVIE, {
-        variables: {id:id}
+        variables: {id: parseInt(id)}
     });
 
     return (
         <Container>
-            <Column>
-            <Title>{loading ? "Loading..." : `${data.movie.title} ${data.movie.isLiked ? "like" : "unlike"}`}</Title>
-            <Subtitle>
-                {data?.movie?.language} · {data?.movie?.rating}
-            </Subtitle>
-            <Description>{data?.movie?.description_intro}</Description>
-            </Column>
             <Poster bg={data?.movie?.medium_cover_image}></Poster>
+            <Column>
+                <Title>
+                    {loading 
+                    ? "Loading..."
+                    : `${data.movie?.title} ${data.movie?.isLiked ? "- like" : "- unlike"}`}
+                </Title>
+                <Subtitle>
+                    {data?.movie?.language} · {data?.movie?.rating}
+                </Subtitle>
+                <Description>{data?.movie?.description_intro}</Description>
+            </Column>
         </Container>
     );
 };
